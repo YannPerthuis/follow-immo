@@ -1,0 +1,19 @@
+/* Follow Immo Content Script Styles */
+/* Following cursor rules: Use SCSS and minimize CSS, prefer shadcn */
+
+#follow-immo-button-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  button {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+} 

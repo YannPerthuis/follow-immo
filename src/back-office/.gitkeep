@@ -1,0 +1,6 @@
+# Back office layouts, pages, components
+# This directory contains the full-page management interface for Follow Immo
+# Designed to be a standalone web application that can be:
+# - Deployed as a PWA or standard web app
+# - Embedded in a web view for mobile applications
+# - Accessed independently from the Chrome extension 

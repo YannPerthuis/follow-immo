@@ -1,0 +1,3 @@
+# Leboncoin-specific implementation
+# inject.tsx - DOM UI injection
+# adapter.ts - Page parser and data mapper 

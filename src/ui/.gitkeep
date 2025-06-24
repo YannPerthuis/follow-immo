@@ -1,0 +1,6 @@
+# Shared UI components and themes for back-office and extension
+# Contains common components used across both the extension and back-office
+# This directory contains UI components and themes shared between:
+# - Chrome extension (content injection, popup, sidebar)
+# - Back office interface
+# Includes shadcn/ui components and common styling 

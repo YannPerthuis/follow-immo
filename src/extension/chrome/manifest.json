@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Follow Immo",
+  "version": "1.0.0",
+  "description": "A lightweight Chrome extension for real estate investors to track and manage property listings from Leboncoin",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://www.leboncoin.fr/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.leboncoin.fr/ad/ventes_immobilieres/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Follow Immo"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["sidebar.html"],
+      "matches": ["https://www.leboncoin.fr/*"]
+    }
+  ]
+} 
