@@ -22,17 +22,20 @@ export default defineConfig({
         content: resolve(__dirname, 'chrome/content.ts'),
         popup: resolve(__dirname, 'chrome/popup.ts'),
         sidebar: resolve(__dirname, 'chrome/sidebar.ts'),
+        inject: resolve(__dirname, 'front-adapters/leboncoin/inject.tsx'),
         'content.css': resolve(__dirname, 'chrome/content.scss'),
       },
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]'
+        assetFileNames: '[name].[ext]',
+        format: 'es'
       }
     },
     outDir: '../../dist/extension',
     emptyOutDir: true,
     copyPublicDir: false,
+    target: 'esnext',
   },
   publicDir: false,
   resolve: {

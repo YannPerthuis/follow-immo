@@ -21,7 +21,8 @@
       "@/*": ["../*"],
       "@/ui/*": ["../ui/*"],
       "@/extension/*": ["./*"],
-      "@/back-office/*": ["../back-office/*"]
+      "@/back-office/*": ["../back-office/*"],
+      "@/components/*": ["./components/*"]
     }
   },
   "include": [

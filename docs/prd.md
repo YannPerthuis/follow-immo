@@ -131,7 +131,7 @@
 
 ### Task 2: Follow Button Injection System
 **Header Reference**: "4.1 Follow Button (injected)" + "Inject Follow button on Leboncoin ad pages"
-- [ ] Implement DOM injection system for Follow button on Leboncoin ad pages
+- [X] Implement DOM injection system for Follow button on Leboncoin ad pages
 - [ ] Create reusable UI component in `/src/ui` for Follow button
 - [ ] Implement Leboncoin-specific injector in `/src/front-adapters/leboncoin/inject.tsx`
 - [ ] Ensure button renders in <100ms and integrates seamlessly with existing page layout

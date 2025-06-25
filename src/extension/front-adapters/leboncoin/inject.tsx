@@ -1,106 +1,56 @@
-// Leboncoin-specific DOM UI component injection
-// Following cursor rules: Use React for all UI components
+// Leboncoin-specific injection entry point
+// Delegates all injection logic to core layer following clean architecture
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { InjectionService } from '../../core/services/injectionService';
+import { LeboncoinAdapter } from './adapter';
+
+// Performance tracking for <100ms requirement
+const injectionStartTime = performance.now();
 
 /**
- * Initialize Leboncoin injection
- * This function is called from the content script when a Leboncoin real estate page is detected
+ * Initialize Leboncoin injection using core injection service
+ * This is the entry point for Leboncoin-specific injection
+ * All business logic is handled by the core layer
  */
-export function initializeLeboncoinInjection(): void {
+function initializeLeboncoinInjection(): void {
   console.log('Follow Immo: Initializing Leboncoin injection');
-  
-  // TODO: Implement Follow button injection
-  // This will be expanded in Task 2: Follow Button Injection System
-  
-  // Check if we're on an ad detail page
-  if (isAdDetailPage()) {
-    injectFollowButton();
-  }
-}
+  console.log('Follow Immo: Current URL:', window.location.href);
+  console.log('Follow Immo: DOM ready state:', document.readyState);
 
-/**
- * Check if current page is a Leboncoin ad detail page
- */
-function isAdDetailPage(): boolean {
-  // Check if URL matches pattern: /ad/ventes_immobilieres/{id}
-  return window.location.pathname.startsWith('/ad/ventes_immobilieres/') && 
-         window.location.pathname.split('/').length === 4; // ['', 'ad', 'ventes_immobilieres', 'id']
-}
-
-/**
- * Inject Follow button into the page
- * Following cursor rules: Use React components and shadcn/ui
- */
-function injectFollowButton(): void {
-  // Create container for the Follow button
-  const container = document.createElement('div');
-  container.id = 'follow-immo-button-container';
-  container.style.cssText = `
-    position: relative;
-    z-index: 10000;
-    margin: 10px 0;
-  `;
-  
-  // Find insertion point - typically near the title or price
-  const targetElement = findInsertionPoint();
-  if (targetElement) {
-    targetElement.insertAdjacentElement('afterend', container);
-    
-    // Render React component
-    const root = createRoot(container);
-    root.render(<FollowButton />);
-  }
-}
-
-/**
- * Find the best insertion point for the Follow button
- */
-function findInsertionPoint(): Element | null {
-  // Look for common Leboncoin selectors
-  const selectors = [
-    '[data-test-id="adview-price"]',
-    '.styles_AdviewPrice__BNl_q',
-    'h1',
-    '.font-bold'
-  ];
-  
-  for (const selector of selectors) {
-    const element = document.querySelector(selector);
-    if (element) {
-      return element;
+  // Use requestAnimationFrame to ensure DOM is ready
+  requestAnimationFrame(async () => {
+    try {
+      console.log('Follow Immo: Starting injection process...');
+      
+      // Create Leboncoin adapter (site-specific logic)
+      const adapter = new LeboncoinAdapter();
+      console.log('Follow Immo: Adapter created');
+      
+      // Create core injection service (business logic)
+      const injectionService = new InjectionService();
+      console.log('Follow Immo: Injection service created');
+      
+      // Initialize injection using the adapter
+      console.log('Follow Immo: Calling injection service initialize...');
+      const result = await injectionService.initialize(adapter);
+      
+      if (result.success) {
+        const totalTime = performance.now() - injectionStartTime;
+        console.log(`Follow Immo: Leboncoin injection completed successfully in ${totalTime.toFixed(2)}ms`);
+        console.log(`Follow Immo: Used strategy: ${result.strategy}`);
+      } else {
+        console.warn(`Follow Immo: Leboncoin injection failed: ${result.error}`);
+      }
+      
+    } catch (error) {
+      console.error('Follow Immo: Leboncoin injection error:', error);
+      console.error('Follow Immo: Error stack:', error instanceof Error ? error.stack : 'Unknown error');
     }
-  }
-  
-  return null;
+  });
 }
 
-/**
- * Follow Button React Component
- * Following cursor rules: Use React and shadcn/ui components
- */
-function FollowButton(): JSX.Element {
-  const handleFollow = () => {
-    console.log('Follow button clicked - functionality will be implemented in Task 2');
-    // TODO: Implement follow functionality
-  };
+// Expose function on window for content script to call
+(window as any).initializeLeboncoinInjection = initializeLeboncoinInjection;
 
-  return (
-    <button
-      onClick={handleFollow}
-      style={{
-        backgroundColor: '#007bff',
-        color: 'white',
-        border: 'none',
-        padding: '8px 16px',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '14px',
-        fontWeight: 'bold'
-      }}
-    >
-      🏠 Follow
-    </button>
-  );
-} 
+// Auto-initialize when script loads
+initializeLeboncoinInjection(); 

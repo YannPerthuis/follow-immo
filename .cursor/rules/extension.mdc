@@ -9,6 +9,8 @@ alwaysApply: true
 
 - Local browser cache uses the browser IndexedDB (if possible avoid localStorage).
 
+- **File naming convention**: ALL file names must use lowerCamelCase (e.g., `followButton.tsx`, `injectionService.ts`, `siteAdapter.ts`). Never use PascalCase for file names.
+
 # Chrome Extension Development:
 
 - Extension can be loaded as unpacked extension in Chrome for development.
@@ -27,17 +29,36 @@ alwaysApply: true
 
 - Command execution: Always run extension commands from project root using `npm run build:extension` or `npm run dev:extension`.
 
+# Clean Architecture for Extension:
+
+## Core Layer (`/src/extension/core/`):
+- **Business Logic**: All extension business logic must be in core layer.
+- **Injection System**: Generic DOM injection logic, container creation, and React rendering utilities.
+- **Data Models**: Property listing models, follow state management.
+- **Use Cases**: Follow/unfollow property, manage listings, sync data.
+- **Ports (Interfaces)**: Define contracts that adapters must implement.
+- **No Site Dependencies**: Core must never import or depend on site-specific code.
+
+## Adapter Layer (`/src/extension/front-adapters/{site-name}/`):
+- **Site-Specific Logic**: Handle only site-specific DOM parsing and URL detection.
+- **Data Extraction**: Parse property data from site-specific DOM structure.
+- **Selector Strategy**: Provide site-specific selectors and insertion strategies to core.
+- **Adapter Implementation**: Implement core interfaces/ports for the specific site.
+- **No Business Logic**: Adapters must not contain business logic or generic injection code.
+
 # When implementing site adapters:
 
-- Create separate adapter for each site supported by the extension in `/src/extension/front-adapters/{site-name}/` as for leboncoin.
+- Create separate adapter for each site supported by the extension in `/src/extension/front-adapters/{site-name}/`.
 
-- Handle site-specific DOM parsing and data extraction `/src/extension/front-adapters/{site-name}/adapter.ts`.
+- **adapter.ts**: Handle site-specific DOM parsing, data extraction, and URL detection only.
 
-- Handle site-specific DOM UI component injection `/src/extension/front-adapters/{site-name}/inject.tsx`.
+- **inject.tsx**: Site entry point that configures core injection system with site-specific strategies.
 
-- Implement standard interface (aka port for clean architecture) defined in `/src/extension/core`.
+- **Implement ports**: All adapters must implement standard interfaces defined in `/src/extension/core/ports/`.
 
-- Define business logic of extension in `/src/extension/core` too.
+- **Delegate to core**: Adapters must delegate all injection, rendering, and business logic to core layer.
+
+- **Site-specific only**: Adapters should only contain code that is unique to that specific site.
 
 - Provide fallback for missing or changed page elements.
 

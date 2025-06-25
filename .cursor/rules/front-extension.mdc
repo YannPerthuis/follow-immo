@@ -9,7 +9,11 @@ alwaysApply: true
 
 - Optimize for performance: lazy loading, minimal DOM manipulation.
 
+- **File naming convention**: ALL file names must use lowerCamelCase (e.g., `followButton.tsx`, `injectionService.ts`, `siteAdapter.ts`). Never use PascalCase for file names.
+
 - Use **shadcn** ui components exclusively for consistency, never create component from scratch.
+
+- **NEVER create basic UI components** like Button, Input, Card, etc. Always use direct shadcn imports: `import { Button } from '@shadcn/ui'` and use directly: `<Button onClick={() => alert('Clicked!')}>Click Me</Button>`.
 
 - Use the default theme provided by **shadcn** for the moment.
 
