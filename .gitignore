@@ -38,5 +38,4 @@ src/extension/dist/
 *.pem
 
 # Task Master
-.cursor/
 scripts/ 

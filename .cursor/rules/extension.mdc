@@ -1,0 +1,54 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Extension global rules:
+
+- The directory `/src/extension/` is the root dir of the extension. All required code to run the extension must be located from there, so it can be bundled.
+
+- Local browser cache uses the browser IndexedDB (if possible avoid localStorage).
+
+# Chrome Extension Development:
+
+- Extension can be loaded as unpacked extension in Chrome for development.
+
+- Build process: `npm run build:extension` creates `dist/extension/` folder with all required files.
+
+- Development workflow: Use `npm run dev:extension` for watch mode, then reload extension in Chrome.
+
+- Required files in `dist/extension/` for Chrome: `manifest.json`, `background.js`, `content.js`, `content.css`, HTML files.
+
+- Extension configuration: All build config (package.json, vite.config.ts, etc.) located in `src/extension/`.
+
+- Chrome runtime files: All Chrome extension files (manifest.json, background.ts, content.ts, etc.) organized in `src/extension/chrome/`.
+
+- Workspace isolation: Extension has independent dependencies and build process from root project.
+
+- Command execution: Always run extension commands from project root using `npm run build:extension` or `npm run dev:extension`.
+
+# When implementing site adapters:
+
+- Create separate adapter for each site supported by the extension in `/src/extension/front-adapters/{site-name}/` as for leboncoin.
+
+- Handle site-specific DOM parsing and data extraction `/src/extension/front-adapters/{site-name}/adapter.ts`.
+
+- Handle site-specific DOM UI component injection `/src/extension/front-adapters/{site-name}/inject.tsx`.
+
+- Implement standard interface (aka port for clean architecture) defined in `/src/extension/core`.
+
+- Define business logic of extension in `/src/extension/core` too.
+
+- Provide fallback for missing or changed page elements.
+
+- Maintain compatibility with site updates.
+
+# Leboncoin-specific rules:
+
+- Individual ad URL pattern: `https://www.leboncoin.fr/ad/ventes_immobilieres/{id}`
+
+- Listing page URL: `https://www.leboncoin.fr/ventes_immobilieres/`
+
+- Extension should inject Follow button ONLY on individual ad pages, not listing pages.
+
+- URL matching pattern in manifest: `https://www.leboncoin.fr/ad/ventes_immobilieres/*`

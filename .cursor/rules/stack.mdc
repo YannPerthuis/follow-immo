@@ -1,0 +1,84 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Overview
+
+- You are working on **Follow Immo**, a lightweight Chrome extension for real estate investors to track and manage property listings from Leboncoin. The extension allows users to "follow" ads, store them locally, and manage them through a sidebar and back office interface.
+
+# Technical Stack
+
+## Core Technologies
+- **TypeScript** - Strict typing with proper type definitions
+- **React** + **React DOM** - UI framework for components and injection
+- **Vite** - Build tool and development server
+- **SCSS/Sass** - Styling with CSS preprocessing
+
+## UI Framework & Styling
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Component library (exclusively used)
+- **class-variance-authority (cva)** - Component variant management
+- **Lucide React** - Icon library
+
+## Utilities
+- **clsx** + **tailwind-merge** - Class management (via cn() utility)
+- **PostCSS** + **Autoprefixer** - CSS post-processing
+
+## Chrome Extension APIs
+- **@types/chrome** - TypeScript definitions for extension APIs
+
+# Development Principles
+
+- Use **TypeScript** strictly with proper type definitions.
+
+- Follow **clean architecture** principles with clear separation of concerns.
+
+- Write modular, testable code with clear interfaces.
+
+- Do **not over engineer** code implementation, keep things as simple as possible in order to go faster and maintain it easily.
+
+- Always implement **error handling** for parsing failures.
+
+- Follow the **Airbnb JavaScript style guide**.
+
+- Always respect the following architecture:
+```
+/follow-immo                      # Root project with workspace management
+    /package.json                 # Root orchestration, workspaces config
+    /src
+        /back-office              # Back office layouts, pages, components (future workspace)
+        /ui                       # Shared UI components and themes
+        /extension                # Extension workspace with independent config
+            /package.json         # Extension-specific dependencies
+            /vite.config.ts       # Extension build configuration
+            /tsconfig.json        # Extension TypeScript config
+            /tailwind.config.js   # Extension styling config
+            /postcss.config.js    # Extension CSS processing
+            /chrome               # Chrome extension runtime files
+                - manifest.json   # Extension manifest
+                - background.ts   # Service worker
+                - content.ts      # Content script
+                - content.scss    # Content script styles
+                - popup.ts        # Popup script
+                - popup.html      # Popup HTML
+                - sidebar.ts      # Sidebar script
+                - sidebar.html    # Sidebar HTML
+            /core                 # Business logic, models, use cases, ports
+            /front-adapters
+                /leboncoin        # Leboncoin-specific implementation
+                    - inject.tsx  # DOM UI injection
+                    - adapter.ts  # Page parser and data mapper
+    /dist
+        /extension                # Built extension files for Chrome
+```
+
+## Workspace Management
+
+- **Multi-package architecture**: Root manages multiple independent packages.
+
+- **Extension workspace**: Complete build environment in `src/extension/`.
+
+- **Shared components**: `src/ui/` used across extension and back-office.
+
+- **Independent builds**: Each workspace builds to its own `dist/` subdirectory.

@@ -1,0 +1,135 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Build and Development Rules
+
+## Project Structure
+
+- **Root package.json**: Project orchestration with workspace management and build scripts.
+
+- **Extension-specific config**: All extension build configuration located in `src/extension/` directory.
+
+- **Configuration files**: package.json, tsconfig.json, vite.config.ts, tailwind.config.js, postcss.config.js in `src/extension/`.
+
+- **Chrome runtime files**: All Chrome extension files (manifest.json, background.ts, content.ts, etc.) organized in `src/extension/chrome/`.
+
+- Never create .cursorrules at root - use only .cursor/rules/ directory for rules.
+
+- Source code organized in `src/` with separate directories: `back-office/`, `ui/`, `extension/`.
+
+## Build Process
+
+- **Extension build**: `npm run build:extension` - builds extension from `src/extension/` to `dist/extension/`.
+
+- **Overall build**: `npm run build` - builds both extension and back-office (when implemented).
+
+- Extension uses Vite as build tool with custom configuration for Chrome extension.
+
+- TypeScript compilation must pass before Vite build (`tsc && vite build`).
+
+- SCSS files automatically compiled to CSS during build process.
+
+## File Handling
+
+- **Extension output**: All extension files built to `dist/extension/` directory.
+
+- manifest.json copied from src/extension/chrome/ to dist/extension/ during build.
+
+- HTML files (popup.html, sidebar.html) copied from src/extension/chrome/ to dist/extension/ for Chrome extension compatibility.
+
+- All JavaScript files output as .js (background.js, content.js, inject.js) in dist/extension/.
+
+- SCSS compiled to CSS (content.scss → content.css) from src/extension/chrome/ to dist/extension/.
+
+## Development Workflow
+
+- **Extension development**: `npm run dev:extension` (watch mode with auto-rebuild).
+
+- **Chrome extension loading**: Load unpacked extension from `dist/extension/` folder.
+
+- **Testing cycle**: Save files → Auto rebuild → Reload extension in Chrome → Test on target site.
+
+- **Dependency management**: Extension has its own package.json and node_modules in src/extension/.
+
+## Workspace Structure
+
+- **Root workspace**: Manages overall project with npm workspaces configuration.
+
+- **Extension workspace**: Independent package in `src/extension/` with its own dependencies.
+
+- **Future workspaces**: Back-office will be added as separate workspace when implemented.
+
+## Key Commands
+
+- **Install all dependencies**: `npm run install:all` - installs root and extension dependencies.
+
+- **Extension build**: `npm run build:extension` - builds only the extension.
+
+- **Extension development**: `npm run dev:extension` - watch mode for extension development.
+
+- **Overall build**: `npm run build` - builds all components (extension + future back-office).
+
+## Important Notes
+
+- Always run commands from project root, not from src/extension/ directly.
+
+- Extension dependencies are isolated in src/extension/package.json.
+
+- Chrome extension loading: Use `dist/extension/` folder, not `dist/` root.
+
+- Configuration files (vite.config.ts, tsconfig.json, etc.) are in src/extension/, not root.
+
+- Chrome extension runtime files are in src/extension/chrome/, separate from config files.
+
+## Troubleshooting
+
+- **Build fails**: Ensure you're running `npm run build:extension` from project root, not from src/extension/.
+
+- **Dependencies missing**: Run `npm run install:all` to install both root and extension dependencies.
+
+- **Chrome extension not loading**: Load from `dist/extension/` folder, not `dist/` root.
+
+- **Path alias errors**: Check that both src/extension/tsconfig.json and src/extension/vite.config.ts have correct path mappings.
+
+- **CSS not compiling**: Verify tailwind.config.js and postcss.config.js are in src/extension/ directory.
+
+- **File not found errors**: Check that Chrome extension files are in src/extension/chrome/ and import paths are correct.
+
+## Dependencies
+
+- Minimal dependencies philosophy - only add what's absolutely necessary.
+
+### Core Dependencies
+- **react**, **react-dom** - UI framework for components and DOM manipulation
+- **typescript** - Type safety and development experience
+- **vite** - Build tool and development server
+- **sass** - SCSS compilation to CSS
+
+### UI and Styling Dependencies
+- **tailwindcss** - Utility-first CSS framework (required for shadcn/ui)
+- **postcss** - CSS post-processing tool
+- **autoprefixer** - Automatic vendor prefixing for CSS
+- **@tailwindcss/postcss** - PostCSS plugin for Tailwind CSS v4+
+
+### Component Utilities
+- **class-variance-authority (cva)** - Component variant management for shadcn/ui
+- **clsx** - Conditional CSS class utility
+- **tailwind-merge** - Resolves conflicting Tailwind CSS classes
+- **lucide-react** - Icon library compatible with shadcn/ui
+
+### Development Dependencies
+- **@types/chrome** - TypeScript definitions for Chrome extension APIs
+- **@types/node** - Node.js type definitions
+- **@types/react**, **@types/react-dom** - React type definitions
+
+### Configuration Requirements
+- package.json must include `"type": "module"` for ES module support
+- tailwind.config.js and postcss.config.js required for CSS processing
+- Path aliases configured in both tsconfig.json and vite.config.ts
+- Global CSS file (src/ui/globals.css) with Tailwind directives
+- Utility function (src/ui/lib/utils.ts) with cn() helper for class merging
+
+- Avoid ESM-only packages that cause compatibility issues with our build setup.
+- Use built-in Node.js fs module for simple file operations instead of external plugins when possible.

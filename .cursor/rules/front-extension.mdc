@@ -1,0 +1,62 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# UI/UX Guidelines
+
+- Use **React** for all front end page/layout/components and UI components.
+
+- Optimize for performance: lazy loading, minimal DOM manipulation.
+
+- Use **shadcn** ui components exclusively for consistency, never create component from scratch.
+
+- Use the default theme provided by **shadcn** for the moment.
+
+- Do not use inline style on component. Prefer to SCSS file, but write the minimum of css you can, prefer **shadcn**.
+
+- ALWAYS use `.scss` files, NEVER `.css` files. SCSS must be compiled to CSS during build.
+
+# Styling and Component Utilities
+
+- Use **Tailwind CSS** classes for styling (required for shadcn/ui compatibility).
+
+- Import and use the `cn()` utility function from `@/ui/lib/utils` for conditional classes.
+
+- Use **class-variance-authority (cva)** for creating component variants with shadcn/ui pattern.
+
+- **clsx** and **tailwind-merge** are available through the `cn()` utility - do not import directly.
+
+- **Lucide React** icons available for consistent iconography: `import { IconName } from 'lucide-react'`.
+
+- Global Tailwind styles available through `@/ui/globals.css` - import when needed.
+
+- Maintain minimal, clean interface design.
+
+- Ensure responsive design for various screen sizes.
+
+- Follow accessibility best practices.
+
+- Keep interaction patterns simple and intuitive.
+
+# Performance Requirements
+
+- Extension total size must be <200kb (zipped).
+
+- Component render time must be <100ms.
+
+- Minimize DOM queries and manipulation.
+
+- Use efficient data structures for ad storage and retrieval.
+
+- Implement proper cleanup to prevent memory leaks.
+
+# React Component Injection Guidelines
+
+- Create React components using `createRoot` from 'react-dom/client' for DOM injection.
+
+- Use proper insertion points on target sites (near price, title, or main content areas).
+
+- Provide fallback selectors when injecting into external sites.
+
+- Handle cases where target elements might not exist or change over time.
